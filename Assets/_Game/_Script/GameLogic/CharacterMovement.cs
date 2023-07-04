@@ -10,6 +10,8 @@ public class CharacterMovement : MonoBehaviour
 	private                  Vector3          _vectorVelocity;
 	[HideInInspector] public bool             _isFirstGamePlayTouch;
 
+	private bool _isStop;
+
 	public void Init(PlayerController player, float speed, bool isFirstGamePlayTouch)
 	{
 		_speed = speed;
@@ -35,7 +37,7 @@ public class CharacterMovement : MonoBehaviour
 
 	private void Update()
 	{
-		if (!_isFirstGamePlayTouch) return;
+		if (!_isFirstGamePlayTouch || _isStop) return;
 
 		Vector3 vectorTouch = CanvasIngame.Instance.panelControl.GetVectorTargetTouch();
 		Twist(vectorTouch.x, vectorTouch.y);
@@ -52,5 +54,10 @@ public class CharacterMovement : MonoBehaviour
 		if (h1 == 0f && v1 == 0f) { return; }
 
 		transform.localEulerAngles = new Vector3(0f, 0f, -1 * Mathf.Atan2(h1, v1) * 180 / Mathf.PI);
+	}
+
+	public void stop()
+	{
+		_isStop = true;
 	}
 }
