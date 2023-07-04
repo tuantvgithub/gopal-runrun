@@ -1,23 +1,19 @@
-using System.Collections;
-using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class CharacterMovement : MonoBehaviour {
-	[FormerlySerializedAs("playerCaptainBody")]
+public class CharacterMovement : MonoBehaviour
+{
 	[Title("Character components:")]
 	[SerializeField] private Rigidbody2D characterRGBody;
+	
+	private                  float            _speed;
+	private                  Vector3          _vectorVelocity;
+	[HideInInspector] public bool             _isFirstGamePlayTouch;
 
-	private PlayerController _owner;
-	private float _speed;
-	private Vector3 _vectorVelocity;
-	[HideInInspector] public bool _isFirstGamePlayTouch;
-
-	public void Init(PlayerController player, float speed, bool isFirstGamePlayTouch) {
-		_owner = player;
+	public void Init(PlayerController player, float speed, bool isFirstGamePlayTouch)
+	{
 		_speed = speed;
-		// characterRGBody.velocity = Vector3.forward.normalized * speed;
+
 		_isFirstGamePlayTouch = isFirstGamePlayTouch;
 	}
 
@@ -40,22 +36,21 @@ public class CharacterMovement : MonoBehaviour {
 	private void Update()
 	{
 		if (!_isFirstGamePlayTouch) return;
-		
+
 		Vector3 vectorTouch = CanvasIngame.Instance.panelControl.GetVectorTargetTouch();
 		Twist(vectorTouch.x, vectorTouch.y);
 		Debug.Log(vectorTouch);
-		if (vectorTouch != Vector3.zero) {
-			_vectorVelocity.x = vectorTouch.x;
-			_vectorVelocity.y = vectorTouch.y;
+		if (vectorTouch != Vector3.zero)
+		{
 			characterRGBody.MovePosition(transform.position + vectorTouch.normalized * _speed * Time.deltaTime);
-			// characterRGBody.AddForce(_vectorVelocity.normalized * _speed, ForceMode2D.Force);
 		}
 	}
 
-	private void Twist(float h1, float v1) {
+	private void Twist(float h1, float v1)
+	{
 		//get radian angle
 		if (h1 == 0f && v1 == 0f) { return; }
 
-		transform.localEulerAngles = new Vector3(0f, 0f, -1*Mathf.Atan2(h1, v1) * 180 / Mathf.PI);
+		transform.localEulerAngles = new Vector3(0f, 0f, -1 * Mathf.Atan2(h1, v1) * 180 / Mathf.PI);
 	}
 }
