@@ -11,7 +11,7 @@ public class PlayerController : MonoBehaviour
 	private void Start()
 	{
 		isFirstGamePlayTouch = false;
-		character1.Init(this, speed, isFirstGamePlayTouch);
+		character1.Init(speed, isFirstGamePlayTouch);
 	}
 
 	public void SetIsFirstGamePlayTouch(bool value)

@@ -1,20 +1,32 @@
-using Sirenix.OdinInspector;
 using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-	[SerializeField] private Rigidbody2D characterRGBody;
+	private static readonly int Run  = Animator.StringToHash("Run");
+	private static readonly int Idle = Animator.StringToHash("Idle");
 	
-	private                  float            _speed;
-	private                  Vector3          _vectorVelocity;
-	[HideInInspector] public bool             _isFirstGamePlayTouch;
+	
+	[SerializeField] private Transform   characterVisual;
+	[SerializeField] private Rigidbody2D characterRGBody;
+	[SerializeField] private Animator    characterAnimator;
 
-	private bool _isStop;
+	private                  float   _speed;
+	private                  Vector3 _vectorVelocity;
+	[HideInInspector] public bool    _isFirstGamePlayTouch;
 
-	public void Init(PlayerController player, float speed, bool isFirstGamePlayTouch)
+	private bool    _isStop;
+	private float   _primalScale;
+	private Vector3 _visualScale;
+
+	private void Awake()
 	{
-		_speed = speed;
+		_visualScale = characterVisual.localScale;
+		_primalScale = _visualScale.x;
+	}
 
+	public void Init(float speed, bool isFirstGamePlayTouch)
+	{
+		_speed                = speed;
 		_isFirstGamePlayTouch = isFirstGamePlayTouch;
 	}
 
@@ -23,24 +35,27 @@ public class CharacterMovement : MonoBehaviour
 		if (!_isFirstGamePlayTouch || _isStop) return;
 
 		Vector3 vectorTouch = CanvasIngame.Instance.panelControl.GetVectorTargetTouch();
-		Twist(vectorTouch.x, vectorTouch.y);
 		Debug.Log(vectorTouch);
+		
 		if (vectorTouch != Vector3.zero)
 		{
+			characterAnimator.SetTrigger(Run);
+			if (vectorTouch.x < 0)
+			{
+				_visualScale.x             = 1 * _primalScale;
+				characterVisual.localScale = _visualScale;
+			} else if (vectorTouch.x > 0)
+			{
+				_visualScale.x             = -1 * _primalScale;
+				characterVisual.localScale = _visualScale;
+			}
+
 			characterRGBody.MovePosition(transform.position + vectorTouch.normalized * _speed * Time.deltaTime);
+		} else
+		{
+			characterAnimator.SetTrigger(Idle);
 		}
 	}
 
-	private void Twist(float h1, float v1)
-	{
-		//get radian angle
-		if (h1 == 0f && v1 == 0f) { return; }
-
-		transform.localEulerAngles = new Vector3(0f, 0f, -1 * Mathf.Atan2(h1, v1) * 180 / Mathf.PI);
-	}
-
-	public void stop()
-	{
-		_isStop = true;
-	}
+	public void stop() { _isStop = true; }
 }
