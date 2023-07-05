@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-	[Title("Character components:")]
 	[SerializeField] private Rigidbody2D characterRGBody;
 	
 	private                  float            _speed;
@@ -18,22 +17,6 @@ public class CharacterMovement : MonoBehaviour
 
 		_isFirstGamePlayTouch = isFirstGamePlayTouch;
 	}
-
-	// private void FixedUpdate()
-	// {
-	// 	if (!_isFirstGamePlayTouch) return;
-		
-	// 	Vector3 vectorTouch = CanvasIngame.Instance.panelControl.GetVectorTargetTouch();
-	// 	Twist(vectorTouch.x, vectorTouch.y);
-	// 	Debug.Log(vectorTouch);
-	// 	if (vectorTouch != Vector3.zero) {
-	// 		_vectorVelocity.x = vectorTouch.x;
-	// 		_vectorVelocity.y = vectorTouch.y;
-	// 		// characterRGBody.MovePosition(transform.position + vectorTouch.normalized * _speed * Time.deltaTime);
-	// 		// characterRGBody.AddForce(_vectorVelocity.normalized * _speed, ForceMode2D.Force);
-	// 		characterRGBody.velocity = new Vector2(vectorTouch.x, vectorTouch.y);
-	// 	}
-	// }
 
 	private void Update()
 	{
