@@ -5,7 +5,6 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] private float             speed = 5;
 	[SerializeField] private CharacterMovement character1;
 
-
 	[HideInInspector] public bool isFirstGamePlayTouch;
 
 	private void Start()

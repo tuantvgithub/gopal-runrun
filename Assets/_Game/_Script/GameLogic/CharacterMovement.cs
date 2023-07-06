@@ -9,6 +9,7 @@ public class CharacterMovement : MonoBehaviour
 	[SerializeField] private Transform   characterVisual;
 	[SerializeField] private Rigidbody2D characterRGBody;
 	[SerializeField] private Animator    characterAnimator;
+	[SerializeField] private UDPUtils udp;
 
 	private                  float   _speed;
 	private                  Vector3 _vectorVelocity;
@@ -28,6 +29,7 @@ public class CharacterMovement : MonoBehaviour
 	{
 		_speed                = speed;
 		_isFirstGamePlayTouch = isFirstGamePlayTouch;
+		udp.Send(transform.position.x, transform.position.y);
 	}
 
 	private void Update()
@@ -51,6 +53,7 @@ public class CharacterMovement : MonoBehaviour
 			}
 
 			characterRGBody.MovePosition(transform.position + vectorTouch.normalized * _speed * Time.deltaTime);
+			udp.Send(transform.position.x, transform.position.y);
 		} else
 		{
 			characterAnimator.SetTrigger(Idle);
