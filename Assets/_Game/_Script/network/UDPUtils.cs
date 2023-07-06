@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Globalization;
 
 public class UDPUtils : MonoBehaviour
 {
@@ -37,9 +38,12 @@ public class UDPUtils : MonoBehaviour
     // logic để lấy tọa độ x, y
     public void Gopal(string receivedData)
     {
+        if (String.IsNullOrEmpty(receivedData)) return;
+
         string[] sub = receivedData.Split(";");
         string id = sub[0];
         float x = float.Parse(sub[1], CultureInfo.InvariantCulture.NumberFormat);
         float y = float.Parse(sub[2], CultureInfo.InvariantCulture.NumberFormat);
+        Debug.Log(id + "(" + x + "," + y + ",0)");
     }
 }
